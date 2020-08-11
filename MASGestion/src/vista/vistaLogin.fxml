@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" minHeight="100.0" minWidth="100.0" prefHeight="239.0" prefWidth="403.0" style="-fx-background-color: black;" stylesheets="@temaoscuro.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ControladorLogin">
+   <children>
+      <ImageView fx:id="iViewLogo" fitHeight="50.0" fitWidth="320.0" layoutX="42.0" layoutY="14.0" pickOnBounds="true">
+         <image>
+            <Image url="@logoMAS.png" />
+         </image></ImageView>
+      <TextField fx:id="txtFeedback" editable="false" layoutX="92.0" layoutY="179.0" prefHeight="37.0" prefWidth="220.0" style="-fx-background-color: black;" styleClass="label-bright" text="Introduzca sus credenciales." />
+      <Label layoutX="92.0" layoutY="94.0" text="Usuario :" />
+      <Label layoutX="70.0" layoutY="139.0" text="Contraseña :" />
+      <TextField fx:id="txtUsuario" layoutX="158.0" layoutY="86.0" />
+      <PasswordField fx:id="txtClave" layoutX="158.0" layoutY="131.0" />
+   </children>
+</AnchorPane>

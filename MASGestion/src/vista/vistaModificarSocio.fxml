@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" minHeight="750.0" minWidth="1350.0" prefHeight="750.0" prefWidth="1350.0" style="-fx-background-color: black;" stylesheets="@temaoscuro.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ControladorModificarSocio">
+   <children>
+      <Label layoutX="60.0" layoutY="233.0" text="Nombre :" />
+      <Label layoutX="60.0" layoutY="299.0" text="Apellidos :" />
+      <Label layoutX="60.0" layoutY="365.0" text="Teléfono :" />
+      <TextField fx:id="txtNombre" layoutX="155.0" layoutY="225.0" prefHeight="37.0" prefWidth="237.0" promptText="Campo Requerido" />
+      <TextField fx:id="txtApellidos" layoutX="155.0" layoutY="290.0" prefHeight="37.0" prefWidth="456.0" promptText="Campo Requerido" />
+      <TextField fx:id="txtTelefono" layoutX="155.0" layoutY="355.0" prefHeight="20.0" prefWidth="145.0" />
+      <Button fx:id="btnGuardar" layoutX="949.0" layoutY="569.0" mnemonicParsing="false" onAction="#guardarSocio" prefHeight="69.0" prefWidth="174.0" text="Guardar Cambios" />
+      <Button fx:id="btnSalir" layoutX="1157.0" layoutY="569.0" mnemonicParsing="false" onAction="#salir" prefHeight="69.0" prefWidth="174.0" text="Salir sin modificar" />
+      <Label layoutX="60.0" layoutY="168.0" text="DNI :" />
+      <Label layoutX="675.0" layoutY="365.0" text="Fecha alta en club :" />
+      <Label layoutX="675.0" layoutY="299.0" text="Fecha Nacimiento :" />
+      <Label layoutX="675.0" layoutY="234.0" text="Dirección :" />
+      <Label layoutX="60.0" layoutY="440.0" text="Observaciones :" />
+      <Label fx:id="lbFechaBaja" layoutX="1061.0" layoutY="365.0" text="Fecha Baja :" visible="false" />
+      <Label layoutX="1098.0" layoutY="299.0" text="Socio Activo" />
+      <TextField fx:id="txtDni" layoutX="155.0" layoutY="160.0" prefHeight="37.0" prefWidth="153.0" promptText="Campo Requerido" />
+      <TextArea fx:id="txtObservaciones" layoutX="60.0" layoutY="469.0" prefHeight="200.0" prefWidth="554.0" />
+      <TextField fx:id="txtDireccion" layoutX="825.0" layoutY="226.0" prefHeight="37.0" prefWidth="491.0" />
+      <DatePicker fx:id="dpFechaNacimiento" layoutX="825.0" layoutY="289.0" prefHeight="37.0" prefWidth="140.0" />
+      <DatePicker fx:id="dpFechaAlta" editable="false" layoutX="825.0" layoutY="357.0" prefWidth="140.0" />
+      <CheckBox fx:id="cbActivo" alignment="TOP_LEFT" contentDisplay="TOP" layoutX="1199.0" layoutY="297.0" mnemonicParsing="false" onAction="#mostrarFechaBaja" selected="true" />
+      <DatePicker fx:id="dpFechaBaja" editable="false" layoutX="1174.0" layoutY="356.0" prefWidth="140.0" promptText="Seleccione Actividad" visible="false" />
+      <Label fx:id="etiqFeedback" layoutX="60.0" layoutY="690.0" styleClass="label-bright" text="Aquí puedes ver los detalles del Socio." />
+      <ImageView fx:id="iViewLogo" fitHeight="110.0" fitWidth="640.0" layoutX="355.0" layoutY="14.0" pickOnBounds="true">
+         <image>
+            <Image url="@logoMAS.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="675.0" layoutY="168.0" text="Actividad :" />
+      <ChoiceBox fx:id="cbActividad" layoutX="825.0" layoutY="163.0" prefWidth="150.0" />
+      <Label layoutX="1012.0" layoutY="168.0" text="Membresía expira en :" />
+      <DatePicker fx:id="dpFechaFinMembresia" layoutX="1181.0" layoutY="160.0" prefWidth="135.0" showWeekNumbers="true" />
+   </children>
+</AnchorPane>
