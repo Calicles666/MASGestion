@@ -442,6 +442,47 @@ public class ControladorPrincipal implements Initializable {
         }
     }
 
+    /**Método que inicia la ventana de login*/
+    @FXML
+    private void solicitarCredenciales() {
+        
+                try {
+            //creo un cargador con el xml de la ventana
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/vista/vistaLogin.fxml"));
+            //creo una base y cargo en ella los componentes
+            Parent root = loader.load();
+            /*
+            //instancio en controlador de ésta vista y lo asocio
+            ControladorDetalleSocio controladorDS = loader.getController();
+            //no necesito enviar la lista de personas, solo la persona seleccionada
+            //a la ventana ModificarSocio para su visualizacion
+            controladorDS.recuperarSocio(sSeleccionado);*/
+            //creo una escena que viene de root
+            Scene escena = new Scene(root);
+
+            //ahora creo un escenario
+            Stage escenario = new Stage();
+            // Seteo la scene y la muestro
+            escenario.setTitle("Solicitud Credenciales.");
+            // Set the application icon.
+            escenario.getIcons().add(new Image("/vista/logoMAS.png"));
+            escenario.initModality(Modality.APPLICATION_MODAL); //ventana modal
+            escenario.setScene(escena);//cargo la escena en el escenario
+            escenario.showAndWait(); //la muestro hasta que se cierre por el usuario
+
+        } catch (IOException ex) {
+            //feedback al usuario
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setTitle("Error de E/S");
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
+        }
+
+            
+        
+    }//fin solicitarCredenciales
     /*Metodo para que la lista de socios tenga datos para probar*/
     private void inicializarSocios() {
         
