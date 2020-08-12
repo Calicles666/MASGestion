@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="33.0" prefWidth="620.0">
+         <children>
+            <Button mnemonicParsing="false" text="Muestra 1" />
+            <Button mnemonicParsing="false" text="Muestra 2" />
+            <Button mnemonicParsing="false" text="Muestra 3" />
+         </children>
+      </HBox>
+      <Label prefHeight="358.0" prefWidth="629.0" text="Muestra 1">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="250.0" />
+         </padding>
+      </Label>
+   </children>
+</VBox>

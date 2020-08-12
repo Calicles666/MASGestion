@@ -13,10 +13,11 @@
          <image>
             <Image url="@logoMAS.png" />
          </image></ImageView>
-      <TextField fx:id="txtFeedback" editable="false" layoutX="92.0" layoutY="179.0" prefHeight="37.0" prefWidth="220.0" style="-fx-background-color: black;" styleClass="label-bright" text="Introduzca sus credenciales." />
       <Label layoutX="92.0" layoutY="94.0" text="Usuario :" />
       <Label layoutX="70.0" layoutY="139.0" text="Contraseña :" />
       <TextField fx:id="txtUsuario" layoutX="158.0" layoutY="86.0" />
       <PasswordField fx:id="txtClave" layoutX="158.0" layoutY="131.0" />
+      <Button fx:id="btnAcceder" layoutX="278.0" layoutY="182.0" mnemonicParsing="false" onAction="#acceder" text="Acceder" />
+      <Label fx:id="txtFeedback" layoutX="29.0" layoutY="188.0" text="Introduzca sus credenciales." />
    </children>
 </AnchorPane>

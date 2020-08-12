@@ -9,7 +9,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -18,15 +17,14 @@ import javafx.stage.Stage;
  *
  * @author Abraham Garrido
  */
-public class Inicio extends Application {
+public class Principal extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        
        try {
             //Cargo la vista
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Inicio.class.getResource("/vista/vistaLogin.fxml"));
+            loader.setLocation(Principal.class.getResource("/vista/vistaTablaPersona.fxml"));
  
             // Cargo la ventana
             Pane ventana = (Pane) loader.load();
@@ -35,10 +33,7 @@ public class Inicio extends Application {
             Scene scene = new Scene(ventana);
  
             // Seteo la scene y la muestro
-            primaryStage.setTitle("Login.");
-            // Set the application icon.
-            primaryStage.getIcons().add(new Image("/vista/logoMAS.png"));
-
+            primaryStage.setTitle("Listado de Personas.");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
