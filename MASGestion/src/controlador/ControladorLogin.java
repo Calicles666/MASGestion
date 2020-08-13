@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import modelo.BaseDatosOO;
 import modelo.Usuario;
 import util.Hash;
 
@@ -55,17 +56,22 @@ public class ControladorLogin implements Initializable {
     @FXML
     private void acceder(ActionEvent event) {
 
-        String hashClave = Hash.sha1("123456") ;
-        Usuario yo = new Usuario ("root",hashClave,true);
+        //String hashClave = Hash.sha1("123456") ;
+        //Usuario yo = new Usuario ("root",hashClave,true);
         
         //control de salida a la aplicacion 
         boolean acceso ;
        
         String nombreU = txtUsuario.getText();
         String clave = txtClave.getText();
-        hashClave = Hash.sha1(clave);
+        String hashClave = Hash.sha1(clave);
+        
+        //conexion con bd
+        BaseDatosOO bd = new BaseDatosOO();
+        //busco el usuario en la bd
+        Usuario yo = bd.buscarUsuario(nombreU);
 
-        if (nombreU.equals(yo.getUsuario())
+        if (yo!=null && nombreU.equals(yo.getUsuario())
                 && hashClave.equals(yo.getClave())) {
             acceso = true;
         } else {
