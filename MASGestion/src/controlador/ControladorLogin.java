@@ -24,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.Usuario;
+import util.Hash;
 
 /**
  * FXML Controller class
@@ -53,16 +54,19 @@ public class ControladorLogin implements Initializable {
 
     @FXML
     private void acceder(ActionEvent event) {
-        Usuario yo = new Usuario ("root","123456",true);
+
+        String hashClave = Hash.sha1("123456") ;
+        Usuario yo = new Usuario ("root",hashClave,true);
         
         //control de salida a la aplicacion 
         boolean acceso ;
        
         String nombreU = txtUsuario.getText();
         String clave = txtClave.getText();
+        hashClave = Hash.sha1(clave);
 
         if (nombreU.equals(yo.getUsuario())
-                && clave.equals(yo.getClave())) {
+                && hashClave.equals(yo.getClave())) {
             acceso = true;
         } else {
             txtFeedback.setText("Credenciales erroneas.");

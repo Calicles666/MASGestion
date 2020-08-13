@@ -7,11 +7,16 @@ package modelo;
 
 import java.util.Objects;
 
-/**
- *
- * @author Abraham Garrido
- */
-public class Usuario {
+import java.io.Serializable;
+
+import javax.persistence.*;
+
+@Entity
+public class Usuario implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    @Id @GeneratedValue
+    private long id;
     
     /**nombre de usuario a efectos de credenciales*/
     private String usuario; //    VARCHAR(10) NOT NULL PRIMARY KEY,
