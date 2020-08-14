@@ -33,8 +33,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import modelo.BaseDatosOO;
 import modelo.Socio;
 import modelo.Socio.Actividad;
+import modelo.Usuario;
 
 /**
  * FXML Controller class
@@ -100,8 +102,16 @@ public class ControladorPrincipal implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         //crear la lista observable vacía
-        socios = FXCollections.observableArrayList();
+        
+        //ingresarSociosPruebas();
+        //crear la lista observable con todos los socios
+         //conexion con bd
+        BaseDatosOO bd = new BaseDatosOO();
+        //extraigo los socios de la bd
+        socios = FXCollections.observableArrayList(bd.queryAll());
+        //cierre
+        bd.cerrarBD();
+        
         
         sociosFiltrados = FXCollections.observableArrayList();
         
@@ -119,7 +129,7 @@ public class ControladorPrincipal implements Initializable {
         colActividad.setCellValueFactory(new PropertyValueFactory("actividad"));   
         
         //para hacer pruebas
-        inicializarSocios();
+        //inicializarSocios();
         
         // filtarSociosActivos va a llamar a filtrar
         //y éste hara la carga inicial correspondiente 
@@ -505,6 +515,35 @@ public class ControladorPrincipal implements Initializable {
         socios.add(s4);
         socios.add(s5);
         
+        
+    }
+
+    /**Método que introduce varios socio en la BD para testear
+     */
+    private void ingresarSociosPruebas() {
+        
+        Socio s1 = new Socio ("75795734Q","Abraham","Garrido Rosillo",
+                Actividad.MUAYTHAI, LocalDate.of(1982, Month.FEBRUARY, 10),true);
+        Socio s2 = new Socio ("75756437A","Elena","Gutierrez Barrios",
+                Actividad.YOGA, LocalDate.of(1978, Month.JUNE, 26),false);
+        s2.setFechaBaja(LocalDate.of(2020,Month.MARCH,1));
+        Socio s3 = new Socio ("79412892X","Jimena","Garrido Gutierrez",
+                Actividad.TAEKWONDO, LocalDate.of(2016, Month.JANUARY, 16),true);
+        Socio s4 = new Socio ("79211892F","Pancho","Garrido Gutierrez",
+                Actividad.MUAYTHAI, LocalDate.of(2013, Month.DECEMBER, 4),true);
+        Socio s5 = new Socio ("79211891Y","Jose","Garrido Gutierrez",
+                Actividad.MUAYTHAI, LocalDate.of(2009, Month.MARCH, 10),LocalDate.of(2020, Month.MARCH, 10));
+         //conexion con bd
+        BaseDatosOO bd = new BaseDatosOO();
+        //ingreso los socios creados en la  bd
+                
+        bd.insertarSocio(s1);
+        bd.insertarSocio(s2);
+        bd.insertarSocio(s3);
+        bd.insertarSocio(s4);
+        bd.insertarSocio(s5);
+        //cierre
+        bd.cerrarBD();
         
     }
     
