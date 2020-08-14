@@ -23,6 +23,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import modelo.BaseDatosOO;
 import modelo.Socio;
 import modelo.Socio.Actividad;
 
@@ -69,16 +70,21 @@ public class ControladorModificarSocio implements Initializable {
     private DatePicker dpFechaFinMembresia;
     // para almacenar el socio seleccionado en la  venta principal y modificarlo
     private Socio socio;
-    //referencia a la lista de socios para controlar preexistencia de un socio desde aqui
+    // lista de socios para controlar preexistencia de un socio desde aqui
     private ObservableList<Socio> socios;
+    //referencia a la bd
+    private BaseDatosOO bd;
 
     
     /**Método en éste caso para que al modificar podamos obtener 
      * el socio seleccionado desde la ventana principal 
-     @param referencia a la lista de personas con la que estamos trabajando*/
-    public void recuperarSocios (ObservableList<Socio> socios , Socio s) {
+     @param bd referencia a la base de datos con que estamos trabajando
+     @param s socio seleccionado en ventana principal*/
+    public void recuperarSocios (BaseDatosOO bd , Socio s) {
     
-        this.socios = socios; //referencio mi socios al de la ventana principal
+        this.bd = bd;
+        //recupero los socios desde la base de datos
+        this.socios = FXCollections.observableArrayList(bd.queryAll()); 
         
         this.socio = s ;
         
@@ -159,9 +165,13 @@ public class ControladorModificarSocio implements Initializable {
 
             } else //si el socio no existe procedo a modificar
             {
+                
                 //ahora ya modifico el socio seleccionado una vez verificado que  
                 // no he modificado incorrectamente el DNI
-                //vuelco los valores de aux en el socio seleccionado
+                
+                //con la persistencia en ObjectDB ha de realizarse en una transaccion con
+                //entity manager por eso lo realizo en la clase BaseDatosOO
+                /*//vuelco los valores de aux en el socio seleccionado
                 socio.setDni(aux.getDni());
                 socio.setNombre(aux.getNombre());
                 socio.setApellidos(aux.getApellidos());
@@ -174,6 +184,9 @@ public class ControladorModificarSocio implements Initializable {
                 socio.setActividad(aux.getActividad());
                 socio.setObservaciones(aux.getObservaciones());
                 socio.setActivo(aux.isActivo());
+                */
+                
+                bd.modificarSocio(socio,aux);
                
 
                 

@@ -137,7 +137,7 @@ public class ControladorPrincipal implements Initializable {
         
         // filtarSociosActivos va a llamar a filtrar
         //y éste hara la carga inicial correspondiente 
-        //filtrarSociosActivos(null); //el boton esta accionado por defecto llamo al método
+        filtrarSociosActivos(null); //el boton esta accionado por defecto llamo al método
         
         
         
@@ -184,7 +184,12 @@ public class ControladorPrincipal implements Initializable {
                 //socios.add(s); 
                 //paralelamente a la bd
                 bd.insertarSocio(s);
-                
+                //para crear la lista sociosFiltradosActivo
+                //dentro del metodo se actualiza la lista de socios 
+                filtrarSociosActivos(null);
+                //para crear la lista sociosFiltradosMEmbresia
+                //dentro del metodo se actualiza la lista de socios 
+                filtrarPendientesPago(null);
                 filtrar(null);
                 
             }
@@ -220,9 +225,9 @@ public class ControladorPrincipal implements Initializable {
                 Parent root = loader.load();
                 //instancio en controlador de ésta vista y lo asocio
                 ControladorModificarSocio controladorMS = loader.getController();
-                //para enviar la lista de personas y la persona seleccionada
+                //para enviar la base de datos y el socio seleccionado
                 //a la ventana ModificarSocio
-                controladorMS.recuperarSocios(socios ,sSeleccionado);
+                controladorMS.recuperarSocios(bd ,sSeleccionado);
                 //creo una escena que viene de root
                 Scene escena = new Scene(root);
 
@@ -237,7 +242,11 @@ public class ControladorPrincipal implements Initializable {
                 escenario.showAndWait(); //la muestro hasta que se cierre por el usuario
 
                 //no necesito recuperar la persona la he modificado desde controladorMS
-                tablaSocios.refresh();
+                 //dentro del metodo se actualiza la lista de socios 
+                filtrarSociosActivos(null);
+                //para crear la lista sociosFiltradosMEmbresia
+                //dentro del metodo se actualiza la lista de socios 
+                filtrarPendientesPago(null);
                 filtrar(null);
 
             } catch (IOException ex) {
@@ -273,7 +282,7 @@ public class ControladorPrincipal implements Initializable {
         //si hay una persona seleccionada
         if (sSeleccionado!=null){
             
-            socios.remove(sSeleccionado);
+            bd.borrarSocio(sSeleccionado);
             //feedback al usuario
             txtFeedback.setText("Usuario borrado con éxito.");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -282,8 +291,12 @@ public class ControladorPrincipal implements Initializable {
             alert.setContentText("Usuario borrado con éxito.");
             alert.showAndWait();
                         
-            //uso el metodo filtrar cada vez que modifico la lista de personas en vez de refrescar
-             filtrar(null);
+            //dentro del metodo se actualiza la lista de socios 
+            filtrarSociosActivos(null);
+            //para crear la lista sociosFiltradosMEmbresia
+            //dentro del metodo se actualiza la lista de socios 
+            filtrarPendientesPago(null);
+            filtrar(null);
             
             
         } else
@@ -361,7 +374,8 @@ public class ControladorPrincipal implements Initializable {
         
         //limpio la lista de filtrados
         sociosFiltradosActivo.clear();
-        
+        //actualizo la lista de socios desde la bd
+        socios = FXCollections.observableArrayList(bd.queryAll());
         if (tbtnSociosActivos.isSelected()) {
             //recorro socios pasando a la lista auxiliar los activos
             for (Socio aux : socios) {
@@ -383,6 +397,8 @@ public class ControladorPrincipal implements Initializable {
 
         //limpio la lista de filtrados
         sociosFiltradosMembresia.clear();
+        //actualizo la lista de socios desde la bd para crear la filtrada correctamente
+        socios = FXCollections.observableArrayList(bd.queryAll());
         if (tbtnPendientesPago.isSelected()) {
 
             //recorro socios pasando a la lista auxiliar los activos

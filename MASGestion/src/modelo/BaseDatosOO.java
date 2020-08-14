@@ -94,10 +94,45 @@ public class BaseDatosOO {
 
     }
     
+    /**Método que borra un Socio preexistente de la base de datos
+     @param s - socio a borrar*/
+    public void borrarSocio(Socio s){
+    
+        em.getTransaction().begin();
+
+        em.remove(s);
+
+        em.getTransaction().commit();
+
+    }
     public void cerrarBD(){
     
         em.close();
         emf.close();
      
+    }
+
+    /**Método que modifica un socio en la base de datos. He de traer los valores
+     * mediente un socio auxiliar ya que ObjectDB realiza así las modificaciones
+     @param socio referncia al socio a modificar
+     @param aux instancia con los valores a establecer*/
+    public void modificarSocio(Socio socio , Socio aux) {
+       
+        em.getTransaction().begin();
+
+        socio.setDni(aux.getDni());
+        socio.setNombre(aux.getNombre());
+        socio.setApellidos(aux.getApellidos());
+        socio.setTelefono(aux.getTelefono());
+        socio.setDireccion(aux.getDireccion());
+        socio.setFechaNacimiento(aux.getFechaNacimiento());
+        socio.setFechaAlta(aux.getFechaAlta());
+        socio.setFechaBaja(aux.getFechaBaja());
+        socio.setFechaFinMembresia(aux.getFechaFinMembresia());
+        socio.setActividad(aux.getActividad());
+        socio.setObservaciones(aux.getObservaciones());
+        socio.setActivo(aux.isActivo());
+
+        em.getTransaction().commit();
     }
 }
