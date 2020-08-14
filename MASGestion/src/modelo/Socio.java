@@ -7,13 +7,16 @@ package modelo;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.io.Serializable;
 
-/**
- * Clase que representa a los socios del club MAS
- *
- * @author Abraham Garrido
- */
-public class Socio {
+import javax.persistence.*;
+
+@Entity
+public class Socio implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    @Id @GeneratedValue
+    private long id;
     
    /**Dni del socio*/
     private String dni; //    VARCHAR(10) NOT NULL PRIMARY KEY,

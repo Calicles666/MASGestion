@@ -50,7 +50,10 @@ public class ControladorLogin implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //para no escribir en las pruebas
+        txtUsuario.setText("root");
+        txtClave.setText("123456");
+        
     }    
 
     @FXML
@@ -61,7 +64,7 @@ public class ControladorLogin implements Initializable {
         
         //control de salida a la aplicacion 
         boolean acceso ;
-       
+              
         String nombreU = txtUsuario.getText();
         String clave = txtClave.getText();
         String hashClave = Hash.sha1(clave);
@@ -70,6 +73,8 @@ public class ControladorLogin implements Initializable {
         BaseDatosOO bd = new BaseDatosOO();
         //busco el usuario en la bd
         Usuario yo = bd.buscarUsuario(nombreU);
+        //cierre
+        bd.cerrarBD();
 
         if (yo!=null && nombreU.equals(yo.getUsuario())
                 && hashClave.equals(yo.getClave())) {
@@ -100,7 +105,9 @@ public class ControladorLogin implements Initializable {
                 escenario.getIcons().add(new Image("/vista/logoMAS.png"));
                 escenario.initModality(Modality.APPLICATION_MODAL); //ventana modal
                 escenario.setScene(escena);//cargo la escena en el escenario
-                escenario.showAndWait(); //la muestro hasta que se cierre por el usuario
+                //la muestro con show para poder cerrar login
+                //con showandwait se queda abierta login
+                escenario.show(); 
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }

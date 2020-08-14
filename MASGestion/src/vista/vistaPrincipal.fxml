@@ -32,5 +32,6 @@
          </image></ImageView>
       <Button fx:id="btnMostrarSocio" layoutX="1099.0" layoutY="375.0" mnemonicParsing="false" onAction="#mostarDetalleSocio" prefHeight="45.0" prefWidth="227.0" text="Ver detalle Socio" />
       <TextField fx:id="txtFeedback" editable="false" layoutX="28.0" layoutY="705.0" prefHeight="37.0" prefWidth="1000.0" style="-fx-background-color: black;" styleClass="label-bright" text="Hola Abraham " />
+      <Button fx:id="btnCerrar" layoutX="1099.0" layoutY="660.0" mnemonicParsing="false" onAction="#cerrarPrograma" prefHeight="45.0" prefWidth="227.0" text="SALIR" />
    </children>
 </AnchorPane>

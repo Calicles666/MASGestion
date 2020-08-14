@@ -80,22 +80,26 @@ public class ControladorPrincipal implements Initializable {
     private Button btnMostrarSocio;
     @FXML
     private TextField txtFeedback;
-    
-    
-     //coleccion especial de JavaFX para poder mostrar los objetos. En socios tendremos 
+    @FXML
+    private Button btnCerrar;
+
+    //coleccion especial de JavaFX para poder mostrar los objetos. En socios tendremos 
     // almacenados en memoria todos los socios del club.
     private ObservableList<Socio> socios;
-    
-      //coleccion para resultados de filtrar por texto
+
+    //coleccion para resultados de filtrar por texto
     private ObservableList<Socio> sociosFiltrados;
-    
-      //coleccion para resultados de filtrar por fecha Membresia
+
+    //coleccion para resultados de filtrar por fecha Membresia
     private ObservableList<Socio> sociosFiltradosMembresia;
-    
-      //coleccion para resultados de filtrar por activo
+
+    //coleccion para resultados de filtrar por activo
     private ObservableList<Socio> sociosFiltradosActivo;
-    
-    
+
+    //conexion con bd
+    BaseDatosOO bd = new BaseDatosOO();
+
+
 
     /**
      * Initializes the controller class.
@@ -106,11 +110,11 @@ public class ControladorPrincipal implements Initializable {
         //ingresarSociosPruebas();
         //crear la lista observable con todos los socios
          //conexion con bd
-        BaseDatosOO bd = new BaseDatosOO();
+        //BaseDatosOO bd = new BaseDatosOO();
         //extraigo los socios de la bd
         socios = FXCollections.observableArrayList(bd.queryAll());
         //cierre
-        bd.cerrarBD();
+        //bd.cerrarBD();
         
         
         sociosFiltrados = FXCollections.observableArrayList();
@@ -133,7 +137,7 @@ public class ControladorPrincipal implements Initializable {
         
         // filtarSociosActivos va a llamar a filtrar
         //y éste hara la carga inicial correspondiente 
-        filtrarSociosActivos(null); //el boton esta accionado por defecto llamo al método
+        //filtrarSociosActivos(null); //el boton esta accionado por defecto llamo al método
         
         
         
@@ -177,7 +181,9 @@ public class ControladorPrincipal implements Initializable {
                 
                 //podria añadirlo desde el Controlador AS pero creo mas 
                 //corecto manipular los socios en el principal
-                socios.add(s); 
+                //socios.add(s); 
+                //paralelamente a la bd
+                bd.insertarSocio(s);
                 
                 filtrar(null);
                 
@@ -299,7 +305,8 @@ public class ControladorPrincipal implements Initializable {
     private void filtrar(KeyEvent event) {
         
         String filtro = txtFiltro.getText().toLowerCase();
-        
+        //cargo los socios de la bd
+        socios = FXCollections.observableArrayList(bd.queryAll());
         //limpio la lista de filtrados
         sociosFiltrados.clear();
         //filtro 1 por texto
@@ -310,7 +317,7 @@ public class ControladorPrincipal implements Initializable {
 
         } else //si hay algo que filtrar
         {
-            //recorreo personas pasando a la lista auxiliar personasFiltradas los que coincidan
+            //recorreo los socios pasando a la lista auxiliar sociosFiltrados los que coincidan
             for (Socio aux : socios) {
 
                 if (aux.getNombre().toLowerCase().contains(filtro)
@@ -326,6 +333,7 @@ public class ControladorPrincipal implements Initializable {
         //si he creado una lista de sociosFiltradosActivo
         if (tbtnSociosActivos.isSelected()) //tambien !sociosFiltradosActivo.isEmpty()
         {
+            
             //que queden en sociosFiltrados los comunes
             sociosFiltrados.retainAll(sociosFiltradosActivo); 
             
@@ -334,6 +342,7 @@ public class ControladorPrincipal implements Initializable {
         //si he creado una lista de sociosFiltradosMembresia
         if (tbtnPendientesPago.isSelected()) //tambien !sociosFiltradosMembresía.isEmpty()
         {
+            
             //que queden en sociosFiltrados los comunes
             sociosFiltrados.retainAll(sociosFiltradosMembresia); 
            
@@ -341,7 +350,7 @@ public class ControladorPrincipal implements Initializable {
         
         //ahora sociosFiltrados contiene los socios correctos a mostrar
         tablaSocios.setItems(sociosFiltrados);
-       
+        tablaSocios.refresh();
     }
 
     /**Método que crea la lista de sociosFiltradosActivos si está el boton 
@@ -453,7 +462,6 @@ public class ControladorPrincipal implements Initializable {
     }
 
     /**Método que inicia la ventana de login*/
-    @FXML
     private void solicitarCredenciales() {
         
                 try {
@@ -545,6 +553,16 @@ public class ControladorPrincipal implements Initializable {
         //cierre
         bd.cerrarBD();
         
+    }
+
+    @FXML
+    private void cerrarPrograma(ActionEvent event) {
+        
+        //recupero el escenario actual para cerrarlo
+            Stage escenario = (Stage) btnCerrar.getScene().getWindow();
+            escenario.close();
+            //cierre bd
+        bd.cerrarBD();
     }
     
 }
