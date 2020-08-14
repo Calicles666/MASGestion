@@ -13,6 +13,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import modelo.BaseDatosOO;
+import modelo.Usuario;
+import util.Hash;
 
 /**
  *
@@ -22,6 +25,12 @@ public class Inicio extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        
+        //creo el primer usuario
+        /*BaseDatosOO bd = new BaseDatosOO();
+        String hashClave = Hash.sha1("123456") ;
+        Usuario yo = new Usuario ("root",hashClave,true);
+        bd.insertarUsuario(yo);*/
         
        try {
             //Cargo la vista
