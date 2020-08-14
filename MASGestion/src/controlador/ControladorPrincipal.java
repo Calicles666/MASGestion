@@ -106,7 +106,7 @@ public class ControladorPrincipal implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        //ingresarMuchosSociosPruebas();
         //ingresarSociosPruebas();
         //crear la lista observable con todos los socios
          //conexion con bd
@@ -566,6 +566,27 @@ public class ControladorPrincipal implements Initializable {
         bd.insertarSocio(s3);
         bd.insertarSocio(s4);
         bd.insertarSocio(s5);
+        //cierre
+        bd.cerrarBD();
+        
+    }
+    
+    /**Método que introduce muchos socios en la BD para testear
+     */
+    private void ingresarMuchosSociosPruebas() {
+        
+        
+        BaseDatosOO bd = new BaseDatosOO();
+        for (int i= 0 ; i<10000 ; i++) {
+        Socio s = new Socio (Integer.toString(i),"Abraham","Garrido Rosillo",
+                Actividad.MUAYTHAI, LocalDate.of(1982, Month.FEBRUARY, 10),true);
+        bd.insertarSocio(s);
+        }
+        
+        
+                
+        
+        
         //cierre
         bd.cerrarBD();
         
