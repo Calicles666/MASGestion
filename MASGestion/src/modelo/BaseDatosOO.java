@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -62,10 +63,31 @@ public class BaseDatosOO {
 
     
     }
+     /**Método para verificar que no existe un usuario en la BDOO por instacia de usuario
+     @param usuario - instancia usuario del que estamos verificando
+     @return - true si existe*/
+    public boolean existeUsuario(Usuario usuario) {
+        boolean resultado = false;
+        try {
+            TypedQuery<Usuario> query
+                    = em.createQuery("SELECT u FROM Usuario u WHERE usuario='"
+                            + usuario.getUsuario() + "'", Usuario.class);
+            //aqui salta una NoResultException si no hay ningun usuario con ese nombre
+            if (query.getSingleResult()!=null) { resultado = true;}
+
+        } catch (NoResultException e) {
+            resultado = false;
+
+        }
+
+        return resultado;
+
+    
+    }
     /**Método para obtener de la BDOO una lista
      @return - lista  con todos los socios
     */
-    public List<Socio> queryAll() {
+    public List<Socio> queryAllSocios() {
         List<Socio> socios ;
         try {
             TypedQuery<Socio> query = 
@@ -135,4 +157,79 @@ public class BaseDatosOO {
 
         em.getTransaction().commit();
     }
+    
+    /**Método que modifica la clave de un Usuario en la base de datos. He de traer los valores
+     * mediente un usuario auxiliar ya que ObjectDB realiza así las modificaciones
+     @param u referncia al usuario a modificar
+     @param aux usuario nuevo con  la clave a modificarar en BD*/
+    public void modificarClaveUsuario(Usuario u, Usuario aux) {
+        /* No funciona no modifica la BD ???
+        em.getTransaction().begin();
+
+        u.setClave(aux.getClave());
+        
+        em.getTransaction().commit();*/
+        em.getTransaction().begin();
+        Query query = em.createQuery(
+                "UPDATE "+u.getClass().getSimpleName()
+                      +  " SET clave = '"+aux.getClave() 
+                + "' WHERE usuario = '"+u.getUsuario()+"'" );
+        query.executeUpdate();
+        em.getTransaction().commit();
+    }
+    /**Método para obtener de la BDOO una lista
+     @return - lista  con todos los socios
+    */
+    public List<Usuario> queryAllUsuarios() {
+        List<Usuario> usuarios ;
+        try {
+            TypedQuery<Usuario> query = 
+                    em.createQuery("SELECT u FROM Usuario u", Usuario.class);
+            
+            usuarios = query.getResultList();
+        
+        } catch (NoResultException e) {
+            usuarios = null;
+
+        }
+
+        return usuarios;
+
+    
+    }
+    /**Método para obtener de la BDOO una lista
+     @return - lista  con todos los socios
+    */
+    public <T> List<T> queryAll(T t) {
+        List<T> lista ;
+        String nombreClase = t.getClass().getSimpleName();
+        try {
+            
+            TypedQuery<?> query = 
+                    em.createQuery("SELECT t FROM "+nombreClase+" t", t.getClass());
+            
+            lista = (List<T>)query.getResultList();
+            
+        
+        } catch (NoResultException e) {
+            lista = null;
+
+        }
+        return lista;
+
+
+    
+    }
+    /**Método generico que borra un elemento preexistente de la base de datos
+     @param t - elemento a borrar*/
+    public <T> void borrarElemento(T t){
+    
+        em.getTransaction().begin();
+
+        em.remove(t);
+
+        em.getTransaction().commit();
+
+    }
+   
 }
