@@ -8,6 +8,7 @@ package controlador;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.zip.DataFormatException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +27,7 @@ import javafx.stage.Stage;
 import modelo.BaseDatosOO;
 import modelo.Socio;
 import modelo.Socio.Actividad;
+import util.Util;
 
 /**
  * FXML Controller class
@@ -84,7 +86,7 @@ public class ControladorModificarSocio implements Initializable {
     
         this.bd = bd;
         //recupero los socios desde la base de datos
-        this.socios = FXCollections.observableArrayList(bd.queryAll()); 
+        this.socios = FXCollections.observableArrayList(bd.queryAllSocios()); 
         
         this.socio = s ;
         
@@ -130,10 +132,15 @@ public class ControladorModificarSocio implements Initializable {
     private void guardarSocio(ActionEvent event) {
         try {
             //tomo los valores de los campos de texto
+            //el DNI define al socio por lo que no permite modificarlo por tanto no hay que controlarlo
             String dni = txtDni.getText().toUpperCase();
             String nombre = txtNombre.getText();
+            //si esta vacio alguno de los campos requeridos lanzo la excepcion
+            if (nombre.isEmpty()) throw new DataFormatException();
             String apellidos = txtApellidos.getText();
+            if (apellidos.isEmpty()) throw new DataFormatException();
             String telefono = txtTelefono.getText();
+            if (!Util.esNumeroTlf(telefono)) throw new DataFormatException();
             String direccion = txtDireccion.getText(); 
             LocalDate fechaNacimiento = dpFechaNacimiento.getValue();
             LocalDate fechaAlta = dpFechaAlta.getValue();
@@ -202,13 +209,26 @@ public class ControladorModificarSocio implements Initializable {
                
                 
             }
-        } catch (NumberFormatException e) {
- 
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error");
-            alert.setContentText("Formato incorrecto");
-            alert.showAndWait();
+        } catch (DataFormatException e) {
+
+            //si ha saltado por el telefono nombre y apellidos no están vacíos
+            if (!txtApellidos.getText().isEmpty()
+                    && !txtNombre.getText().isEmpty()
+                    && !Util.esNumeroTlf(txtTelefono.getText())) 
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setTitle("Error");
+                alert.setContentText("Formato de teléfono erroneo");
+                alert.showAndWait();
+                //si ha saltado por campos vacios requeridos.
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setTitle("Error");
+                alert.setContentText("Introduzca valores en campos requeridos");
+                alert.showAndWait();
+            }
         }
     }
 
