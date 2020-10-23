@@ -30,6 +30,11 @@ public class Usuario implements Serializable {
         this.clave = clave;
         this.administrador = administrador;
     }
+    public Usuario() {
+        this.usuario = "";
+        this.clave = "";
+        this.administrador = false;
+    }
 
     @Override
     public int hashCode() {

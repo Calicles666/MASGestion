@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" minHeight="100.0" minWidth="100.0" prefHeight="347.0" prefWidth="410.0" style="-fx-background-color: black;" stylesheets="@temaoscuro.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ControladorAltaUsuario">
+   <children>
+      <ImageView fx:id="iViewLogo" fitHeight="50.0" fitWidth="320.0" layoutX="42.0" layoutY="14.0" pickOnBounds="true">
+         <image>
+            <Image url="@logoMAS.png" />
+         </image></ImageView>
+      <Label layoutX="101.0" layoutY="93.0" prefHeight="21.0" prefWidth="69.0" text="Usuario :" />
+      <Label layoutX="78.0" layoutY="139.0" prefHeight="21.0" prefWidth="88.0" text="Contraseña :" />
+      <TextField fx:id="txtUsuario" layoutX="170.0" layoutY="85.0" />
+      <PasswordField fx:id="txtClave" layoutX="170.0" layoutY="130.0" />
+      <Button fx:id="btnCrearUsuario" layoutX="257.0" layoutY="280.0" mnemonicParsing="false" onAction="#crearUsuario" text="Crear Usuario" />
+      <Button fx:id="btnCancelar" layoutX="18.0" layoutY="280.0" mnemonicParsing="false" onAction="#cancelar" text="Volver" />
+      <Label fx:id="txtFeedback" layoutX="22.0" layoutY="323.0" text="Introduzca credenciales iniciales para el nuevo usuario" />
+      <PasswordField fx:id="txtClaveConfirmar" layoutX="170.0" layoutY="174.0" />
+      <Label layoutX="14.0" layoutY="182.0" text="Confirme Contraseña :" />
+      <CheckBox fx:id="cbAdministrador" layoutX="187.0" layoutY="229.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="136.0" styleClass="label-bright" text="Administrador" />
+   </children>
+</AnchorPane>

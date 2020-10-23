@@ -14,7 +14,7 @@
       <Label layoutX="60.0" layoutY="365.0" text="Teléfono :" />
       <TextField fx:id="txtNombre" layoutX="155.0" layoutY="225.0" prefHeight="37.0" prefWidth="237.0" promptText="Campo Requerido" />
       <TextField fx:id="txtApellidos" layoutX="155.0" layoutY="290.0" prefHeight="37.0" prefWidth="456.0" promptText="Campo Requerido" />
-      <TextField fx:id="txtTelefono" layoutX="155.0" layoutY="355.0" prefHeight="20.0" prefWidth="145.0" />
+      <TextField fx:id="txtTelefono" layoutX="155.0" layoutY="355.0" prefHeight="37.0" prefWidth="153.0" promptText="Campo Requerido" />
       <Button fx:id="btnGuardar" layoutX="949.0" layoutY="569.0" mnemonicParsing="false" onAction="#guardarSocio" prefHeight="69.0" prefWidth="174.0" text="Guardar y volver" />
       <Button fx:id="btnSalir" layoutX="1157.0" layoutY="569.0" mnemonicParsing="false" onAction="#salir" prefHeight="69.0" prefWidth="174.0" text="Salir sin guardar" />
       <Label layoutX="60.0" layoutY="168.0" text="DNI :" />

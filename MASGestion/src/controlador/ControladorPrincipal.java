@@ -5,6 +5,19 @@
  */
 package controlador;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -72,16 +85,15 @@ public class ControladorPrincipal implements Initializable {
     @FXML
     private ToggleButton tbtnPendientesPago;
     @FXML
-    private Button btnInformeMorosos;
-    @FXML
     private ImageView iViewLogo;
     
     @FXML
     private Button btnMostrarSocio;
-    @FXML
     private TextField txtFeedback;
     @FXML
     private Button btnCerrar;
+    @FXML
+    private Button btnPDF;
 
     //coleccion especial de JavaFX para poder mostrar los objetos. En socios tendremos 
     // almacenados en memoria todos los socios del club.
@@ -98,6 +110,9 @@ public class ControladorPrincipal implements Initializable {
 
     //conexion con bd
     BaseDatosOO bd = new BaseDatosOO();
+    
+    private final String CAMPOVACIO = "NO DISPONIBLE";
+
 
 
 
@@ -112,7 +127,7 @@ public class ControladorPrincipal implements Initializable {
          //conexion con bd
         //BaseDatosOO bd = new BaseDatosOO();
         //extraigo los socios de la bd
-        socios = FXCollections.observableArrayList(bd.queryAll());
+        socios = FXCollections.observableArrayList(bd.queryAllSocios());
         //cierre
         //bd.cerrarBD();
         
@@ -282,7 +297,7 @@ public class ControladorPrincipal implements Initializable {
         //si hay una persona seleccionada
         if (sSeleccionado!=null){
             
-            bd.borrarSocio(sSeleccionado);
+            bd.borrarElemento(sSeleccionado);
             //feedback al usuario
             txtFeedback.setText("Usuario borrado con éxito.");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -319,7 +334,7 @@ public class ControladorPrincipal implements Initializable {
         
         String filtro = txtFiltro.getText().toLowerCase();
         //cargo los socios de la bd
-        socios = FXCollections.observableArrayList(bd.queryAll());
+        socios = FXCollections.observableArrayList(bd.queryAllSocios());
         //limpio la lista de filtrados
         sociosFiltrados.clear();
         //filtro 1 por texto
@@ -375,7 +390,7 @@ public class ControladorPrincipal implements Initializable {
         //limpio la lista de filtrados
         sociosFiltradosActivo.clear();
         //actualizo la lista de socios desde la bd
-        socios = FXCollections.observableArrayList(bd.queryAll());
+        socios = FXCollections.observableArrayList(bd.queryAllSocios());
         if (tbtnSociosActivos.isSelected()) {
             //recorro socios pasando a la lista auxiliar los activos
             for (Socio aux : socios) {
@@ -398,7 +413,7 @@ public class ControladorPrincipal implements Initializable {
         //limpio la lista de filtrados
         sociosFiltradosMembresia.clear();
         //actualizo la lista de socios desde la bd para crear la filtrada correctamente
-        socios = FXCollections.observableArrayList(bd.queryAll());
+        socios = FXCollections.observableArrayList(bd.queryAllSocios());
         if (tbtnPendientesPago.isSelected()) {
 
             //recorro socios pasando a la lista auxiliar los activos
@@ -414,9 +429,6 @@ public class ControladorPrincipal implements Initializable {
         filtrar(null);
     }
 
-    @FXML
-    private void generarInformeMorosos(ActionEvent event) {
-    }
 
     /**Método que aporta la funcionalidad al boton correspondiente cuando el usuario
      pulsa el mismo. Se encarga de cargar la ventana detalles de socio y pasar al 
@@ -600,6 +612,163 @@ public class ControladorPrincipal implements Initializable {
             escenario.close();
             //cierre bd
         bd.cerrarBD();
+    }
+
+    /**Método que genera un PDF con los socios seleccionados en la tabla principal*/
+    @FXML
+    private void generarPDF(ActionEvent event) {
+        
+        // We create the document and set the file name.        
+        // Creamos el documento e indicamos el nombre del fichero.
+        try {
+            Document document = new Document();
+            try {
+
+                PdfWriter.getInstance(document, new FileOutputStream(new File("MASPDF.pdf")));
+
+            } catch (FileNotFoundException fileNotFoundException) {
+                System.out.println("No such file was found to generate the PDF "
+                        + "(No se encontró el fichero para generar el pdf)" + fileNotFoundException);
+            }
+            document.open();
+            
+            // Añadimos los metadatos del PDF
+            document.addTitle("Listado Socios PDF");
+            document.addSubject("Seleccion personalizada");
+            document.addKeywords("Java, PDF, iText");
+            document.addAuthor("Abraham Garrido");
+            document.addCreator("Abraham Garrido");
+            
+              
+            
+            
+             com.itextpdf.text.Image image;
+            try {
+                image = com.itextpdf.text.Image.getInstance("src/vista/logoMAS.png");  
+                
+                image.setAbsolutePosition(250, 800);
+                image.scaleToFit(120, 50);
+                
+                document.add(image);
+            } catch (BadElementException ex) {
+                System.out.println("Image BadElementException" +  ex);
+            } catch (IOException ex) {
+                System.out.println("Image IOException " +  ex);
+            }
+ 
+            Integer numColumns = 4;
+            
+            // We create the table (Creamos la tabla).
+            PdfPTable table = new PdfPTable(numColumns); 
+            //cabecera con nombres de atributos
+            // primera
+            PdfPCell cabecera = new PdfPCell(new Phrase("NOMBRE"));
+            cabecera.setFixedHeight(30);
+            cabecera.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cabecera.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cabecera.setBorder(Rectangle.NO_BORDER);
+            //cabecera.setColspan(2);
+            table.addCell(cabecera);
+            // segunda fila
+            cabecera = new PdfPCell(new Phrase("APELLIDOS"));
+            cabecera.setFixedHeight(30);
+            cabecera.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cabecera.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cabecera.setBorder(Rectangle.NO_BORDER);
+            table.addCell(cabecera);
+            //tercera
+           
+            cabecera = new PdfPCell(new Phrase("ACTIVIDAD"));
+            cabecera.setFixedHeight(30);
+            cabecera.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cabecera.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cabecera.setBorder(Rectangle.NO_BORDER);
+            table.addCell(cabecera);
+            //cuarta
+            
+            cabecera = new PdfPCell(new Phrase("TELÉFONO"));
+            cabecera.setFixedHeight(30);
+            cabecera.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cabecera.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cabecera.setBorder(Rectangle.NO_BORDER);
+            table.addCell(cabecera);
+            
+            table.setHeaderRows(1);
+            
+            /*// Ahora llenamos la tabla del PDF se añaden en orden col y fila
+            una vez hemos establecido que son 4 columnas
+            rellenamos las filas de la tabla  con los socios filtrados
+            que aparecen el la tabla
+            */          
+            for (Socio s : sociosFiltrados) {
+                //nombre
+                PdfPCell celda ;
+                //si el campo no tiene info salta una excepcion 
+                //por lo que hay que controlarlo
+                if (s.getNombre()!=null && !s.getNombre().isEmpty()) {
+                    celda= new PdfPCell(new Phrase(s.getNombre()));
+                }
+                else {
+                    celda=new PdfPCell(new Phrase(CAMPOVACIO));
+                }
+                celda.setFixedHeight(30);
+                celda.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celda.setBorder(Rectangle.NO_BORDER);
+                table.addCell(celda);
+                //apellidos
+                if (s.getApellidos()!=null && !s.getApellidos().isEmpty()) {
+                    celda= new PdfPCell(new Phrase(s.getApellidos()));
+                }
+                else {
+                    celda=new PdfPCell(new Phrase(CAMPOVACIO));
+                }
+                celda.setFixedHeight(30);
+                celda.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celda.setBorder(Rectangle.NO_BORDER);
+                table.addCell(celda);
+                //actividad
+               if (s.getActividad()!=null && !s.getActividad().toString().isEmpty()) {
+                    celda= new PdfPCell(new Phrase(s.getActividad().toString()));
+                }
+                else {
+                    celda=new PdfPCell(new Phrase(CAMPOVACIO));
+                }
+                celda.setFixedHeight(30);
+                celda.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celda.setBorder(Rectangle.NO_BORDER);
+                table.addCell(celda);
+                //telefono
+                if (s.getTelefono()!=null && !s.getTelefono().isEmpty()) {
+                    celda= new PdfPCell(new Phrase(s.getTelefono()));
+                }
+                else {
+                    celda=new PdfPCell(new Phrase(CAMPOVACIO));
+                }
+                celda.setFixedHeight(30);
+                celda.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celda.setBorder(Rectangle.NO_BORDER);
+                table.addCell(celda);
+                
+            }//fin for each
+            
+ 
+            document.add(table);
+            document.close();
+            System.out.println("¡Se ha generado tu hoja PDF con los socios filtrados!");
+            try {
+            File path = new File("MASPDF.pdf");
+            Desktop.getDesktop().open(path);
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        } catch (DocumentException documentException) {
+            System.out.println("Se ha producido un error al generar un documento : " + documentException);
+        }
     }
     
 }

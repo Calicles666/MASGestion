@@ -44,6 +44,8 @@ public class ControladorLogin implements Initializable {
     private PasswordField txtClave;
     @FXML
     private Button btnAcceder;
+    @FXML
+    private Button btnGestionUsuarios;
 
     /**
      * Initializes the controller class.
@@ -116,6 +118,67 @@ public class ControladorLogin implements Initializable {
             escenario.close();
         }
 
+    }
+
+    @FXML
+    private void gestionUsuarios(ActionEvent event) {
+        
+        //control de salida a la aplicacion 
+        boolean acceso ;
+              
+        String nombreU = txtUsuario.getText();
+        String clave = txtClave.getText();
+        String hashClave = Hash.sha1(clave);
+        
+        //conexion con bd
+        BaseDatosOO bd = new BaseDatosOO();
+        //busco el usuario en la bd
+        Usuario yo = bd.buscarUsuario(nombreU);
+        //cierre
+        bd.cerrarBD();
+
+        if (yo!=null && nombreU.equals(yo.getUsuario())
+                && hashClave.equals(yo.getClave())) {
+            acceso = true;
+        } else {
+            txtFeedback.setText("Credenciales erroneas.");
+            acceso = false;
+        }
+        
+        if (acceso) {
+            //Una vez identificado cargo la ventana principal
+            try {
+                //Cargo la vista
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(this.getClass().getResource("/vista/vistaGestionUsuarios.fxml"));
+                
+                Parent root = loader.load();
+                
+               
+                 ControladorGestionUsuarios controladorGU = loader.getController();
+                //para enviar el usuario al controlador Gestion de Usuarios
+                controladorGU.recuperarUsuario(yo);
+                //creo una base y cargo en ella los componentes
+
+                //creo una escena que viene de root
+                Scene escena = new Scene(root);
+
+                //ahora creo un escenario
+                Stage escenario = new Stage();
+                // Seteo la scene y la muestro
+                escenario.setTitle("Gestión Usuarios.");
+                // Set the application icon.
+                escenario.getIcons().add(new Image("/vista/logoMAS.png"));
+                escenario.initModality(Modality.APPLICATION_MODAL); //ventana modal
+                escenario.setScene(escena);//cargo la escena en el escenario
+                //l
+                //con showandwait se queda abierta login
+                escenario.show(); 
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+           
+        }
     }
 
 }

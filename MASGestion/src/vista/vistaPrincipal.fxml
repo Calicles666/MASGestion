@@ -21,17 +21,16 @@
       </TableView>
       <Button fx:id="btnModificar" layoutX="1099.0" layoutY="473.0" mnemonicParsing="false" onAction="#modificarSocio" prefHeight="45.0" prefWidth="227.0" text="Modificar Socio" />
       <Button fx:id="btnEliminar" layoutX="1099.0" layoutY="578.0" mnemonicParsing="false" onAction="#eliminarSocio" prefHeight="45.0" prefWidth="227.0" text="Eliminar Socio" />
-      <Label layoutX="39.0" layoutY="144.0" text="Filtrar por nombre: " />
+      <Label layoutX="39.0" layoutY="144.0" text="Filtrar por texto:" />
       <TextField fx:id="txtFiltro" layoutX="200.0" layoutY="136.0" onKeyReleased="#filtrar" />
       <ToggleButton fx:id="tbtnSociosActivos" layoutX="548.0" layoutY="139.0" mnemonicParsing="false" onAction="#filtrarSociosActivos" selected="true" text="Solo Socios Activos" />
       <ToggleButton fx:id="tbtnPendientesPago" layoutX="842.0" layoutY="139.0" mnemonicParsing="false" onAction="#filtrarPendientesPago" text="Solo pendientes de pago" />
-      <Button fx:id="btnInformeMorosos" layoutX="1099.0" layoutY="21.0" mnemonicParsing="false" onAction="#generarInformeMorosos" prefHeight="132.0" prefWidth="227.0" text="Generar PDF Morosos" />
+      <Button fx:id="btnPDF" layoutX="1099.0" layoutY="21.0" mnemonicParsing="false" onAction="#generarPDF" prefHeight="132.0" prefWidth="227.0" text="Generar PDF Socios" />
       <ImageView fx:id="iViewLogo" fitHeight="110.0" fitWidth="643.0" layoutX="200.0" layoutY="14.0" pickOnBounds="true">
          <image>
             <Image url="@logoMAS.png" />
          </image></ImageView>
       <Button fx:id="btnMostrarSocio" layoutX="1099.0" layoutY="375.0" mnemonicParsing="false" onAction="#mostarDetalleSocio" prefHeight="45.0" prefWidth="227.0" text="Ver detalle Socio" />
-      <TextField fx:id="txtFeedback" editable="false" layoutX="28.0" layoutY="705.0" prefHeight="37.0" prefWidth="1000.0" style="-fx-background-color: black;" styleClass="label-bright" text="Hola Abraham " />
       <Button fx:id="btnCerrar" layoutX="1099.0" layoutY="660.0" mnemonicParsing="false" onAction="#cerrarPrograma" prefHeight="45.0" prefWidth="227.0" text="SALIR" />
    </children>
 </AnchorPane>

@@ -8,6 +8,7 @@ package controlador;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.zip.DataFormatException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,8 +25,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
 import modelo.Socio;
 import modelo.Socio.Actividad;
+import util.Util;
 
 /**
  * FXML Controller class
@@ -106,9 +109,14 @@ public class ControladorAgregarSocio implements Initializable {
         try {
             //tomo los valores de los campos de texto
             String dni = txtDni.getText().toUpperCase();
+            if (!Util.validarNif(dni)) throw new DataFormatException();
             String nombre = txtNombre.getText();
+            //si esta vacio alguno de los campos requeridos lanzo la excepcion
+            if (nombre.isEmpty()) throw new DataFormatException();
             String apellidos = txtApellidos.getText();
+            if (apellidos.isEmpty()) throw new DataFormatException();
             String telefono = txtTelefono.getText();
+            if (!Util.esNumeroTlf(telefono)) throw new DataFormatException();
             String direccion = txtDireccion.getText(); 
             LocalDate fechaNacimiento = dpFechaNacimiento.getValue();
             LocalDate fechaAlta = dpFechaAlta.getValue();
@@ -146,20 +154,43 @@ public class ControladorAgregarSocio implements Initializable {
                //recupero el escenario actual para cerrarlo
                Stage escenario = (Stage) btnGuardar.getScene().getWindow();
                escenario.close();
-               
-                
+
             }
-        } catch (NumberFormatException e) {
- 
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error");
-            alert.setContentText("Formato incorrecto");
-            alert.showAndWait();
+        } catch (DataFormatException e) {
+
+            //primero compruebo que no ha saltado por el DNI incorrecto
+            if (!Util.validarNif(txtDni.getText())) {
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setTitle("Error");
+                alert.setContentText("Formato de DNI incorrecto.");
+                alert.showAndWait();
+
+            } else { //si el DNI es correcto continuo comprobando 
+                //si ha saltado por el telefono nombre y apellidos no están vacíos
+                if (!txtApellidos.getText().isEmpty()
+                        && !txtNombre.getText().isEmpty()
+                        && !Util.esNumeroTlf(txtTelefono.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText(null);
+                    alert.setTitle("Error");
+                    alert.setContentText("Formato de teléfono erroneo");
+                    alert.showAndWait();
+                    //si ha saltado por campos vacios requeridos.
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText(null);
+                    alert.setTitle("Error");
+                    alert.setContentText("Introduzca valores en campos requeridos");
+                    alert.showAndWait();
+                }
+            }
         }
     }
 
-    /**Método que cierra la ventana agregar socio y pone socio a null
+    /**
+     * Método que cierra la ventana agregar socio y pone socio a null
      * @param event - El evento generado en la ventana que lo dispara*/
     @FXML
     private void salir(ActionEvent event) {
@@ -195,7 +226,7 @@ public class ControladorAgregarSocio implements Initializable {
     public void setSocio(Socio socio) {
         this.socio = socio;
     }
+
     
-    
-    
+
 }

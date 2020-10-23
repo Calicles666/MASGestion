@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" minHeight="100.0" minWidth="100.0" prefHeight="259.0" prefWidth="403.0" style="-fx-background-color: black;" stylesheets="@temaoscuro.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ControladorGestionUsuarios">
+   <children>
+      <ImageView fx:id="iViewLogo" fitHeight="50.0" fitWidth="320.0" layoutX="42.0" layoutY="14.0" pickOnBounds="true">
+         <image>
+            <Image url="@logoMAS.png" />
+         </image></ImageView>
+      <Button fx:id="btnAltaUsuario" layoutX="63.0" layoutY="89.0" mnemonicParsing="false" onAction="#altaUsuario" prefHeight="33.0" prefWidth="206.0" text="Alta Usuario" />
+      <Button fx:id="btnEliminarUsuario" layoutX="63.0" layoutY="137.0" mnemonicParsing="false" onAction="#eliminarUsuario" prefHeight="33.0" prefWidth="206.0" text="Eliminar Usuario" />
+      <Button fx:id="btnCambiarClave" layoutX="63.0" layoutY="188.0" mnemonicParsing="false" onAction="#cambiarClave" prefHeight="33.0" prefWidth="206.0" text="Cambiar Clave Acceso" />
+      <Button fx:id="btnVolver" layoutX="286.0" layoutY="188.0" mnemonicParsing="false" onAction="#volver" text="Volver" />
+   </children>
+</AnchorPane>
