@@ -53,8 +53,8 @@ public class ControladorLogin implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //para no escribir en las pruebas
-        txtUsuario.setText("root");
-        txtClave.setText("123456");
+        //txtUsuario.setText("root");
+        //txtClave.setText("123456");
         
     }    
 
